@@ -2,6 +2,7 @@ package com.example.watchme.data
 
 import com.example.watchme.model.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.tasks.await
 class AuthRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -71,7 +72,9 @@ class AuthRepository {
     fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }
-
+    fun userLoggedIn(): FirebaseUser? {
+        return auth.currentUser
+    }
     fun logout() {
         auth.signOut()
     }
