@@ -33,6 +33,16 @@ class Login : Fragment() {
                 observeAuthState()
             }
         }
+        binding.signupBtn.setOnClickListener {
+            lifecycleScope.launch (Dispatchers.IO){
+                signupButtonClicked()
+            }
+        }
+        binding.forgetPasswordTv.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                forgetPasswordClicked()
+            }
+        }
         return binding.root
     }
     private fun loginButtonClicked(){
@@ -52,7 +62,6 @@ class Login : Fragment() {
             )
         }
     }
-
     private fun observeAuthState() {
 
         lifecycleScope.launch {
@@ -82,6 +91,13 @@ class Login : Fragment() {
                 }
             }
         }
+    }
+
+    private fun signupButtonClicked(){
+        findNavController().navigate(R.id.action_login_to_signup)
+    }
+    private fun forgetPasswordClicked(){
+        findNavController().navigate(R.id.action_login_to_forgetPassword)
     }
 
 }
