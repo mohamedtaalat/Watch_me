@@ -5,56 +5,90 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.watchme.R
+import com.example.watchme.databinding.FragmentSignupBinding
+import com.example.watchme.model.AuthResult
+import com.example.watchme.viewmodel.AuthViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [Signup.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Signup : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    lateinit var binding: FragmentSignupBinding
+    val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_signup, container, false)
+        binding = FragmentSignupBinding.inflate(layoutInflater)
+        binding.sloginBtn.setOnClickListener {
+            lifecycleScope.launch {
+                loginButtonClicked()
+            }
+        }
+        binding.ssignupBtn.setOnClickListener {
+            lifecycleScope.launch {
+                signupButtonClicked()
+                observeAuthState()
+            }
+        }
+        return binding.root
     }
+    private fun loginButtonClicked(){
+        findNavController().navigate(R.id.action_signup_to_login)
+    }
+    private fun signupButtonClicked(){
+        val email = binding.emailEdt.text.toString().trim()
+        val password = binding.passwordEdt.text.toString()
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Signup.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Signup().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        if (email.isEmpty()) {
+            binding.emailEdt.error = "Enter email"
+        }
+        if (password.isEmpty()) {
+            binding.passwordEdt.error = "Enter password"
+        }
+        if (!password.isEmpty()&&!email.isEmpty()){
+            viewModel.signup(
+                email,
+                password
+            )
+        }
+    }
+    private fun observeAuthState() {
+
+        lifecycleScope.launch {
+
+            viewModel.authState.collect { result ->
+
+                when (result) {
+
+                    is AuthResult.Loading -> {
+                        binding.ssignupBtn.isEnabled = false
+                        binding.ssignupBtn.text = "Signing up..."
+                        findNavController().navigate(R.id.action_login_to_homePage)
+                    }
+
+                    is AuthResult.Success -> {
+                        binding.ssignupBtn.isEnabled = true
+                        binding.ssignupBtn.text = "Sign up"
+                        Toast.makeText(requireContext(), "Sign up Successful", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is AuthResult.Error -> {
+                        binding.ssignupBtn.isEnabled = true
+                        binding.ssignupBtn.text = "Log in"
+                        Snackbar.make(binding.ssignupBtn,"Sign up failed",Snackbar.LENGTH_SHORT).show()
+                    }
+                    null -> Unit
                 }
             }
+        }
     }
+
 }
