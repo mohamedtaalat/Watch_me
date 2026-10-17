@@ -19,6 +19,8 @@ class AuthViewModel : ViewModel() {
     val authState: StateFlow<AuthResult?> =
         _authState
 
+
+
     fun login(
         email: String,
         password: String

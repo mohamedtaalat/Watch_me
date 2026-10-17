@@ -15,6 +15,7 @@ import com.example.watchme.databinding.FragmentSignupBinding
 import com.example.watchme.model.AuthResult
 import com.example.watchme.viewmodel.AuthViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -62,7 +63,7 @@ class Signup : Fragment() {
     }
     private fun observeAuthState() {
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.Main) {
 
             viewModel.authState.collect { result ->
 
@@ -71,18 +72,19 @@ class Signup : Fragment() {
                     is AuthResult.Loading -> {
                         binding.ssignupBtn.isEnabled = false
                         binding.ssignupBtn.text = "Signing up..."
-                        findNavController().navigate(R.id.action_login_to_homePage)
+
                     }
 
                     is AuthResult.Success -> {
                         binding.ssignupBtn.isEnabled = true
                         binding.ssignupBtn.text = "Sign up"
                         Toast.makeText(requireContext(), "Sign up Successful", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_signup_to_login)
                     }
 
                     is AuthResult.Error -> {
                         binding.ssignupBtn.isEnabled = true
-                        binding.ssignupBtn.text = "Log in"
+                        binding.ssignupBtn.text = "Sign up"
                         Snackbar.make(binding.ssignupBtn,"Sign up failed",Snackbar.LENGTH_SHORT).show()
                     }
                     null -> Unit

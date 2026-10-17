@@ -34,12 +34,12 @@ class Login : Fragment() {
             }
         }
         binding.signupBtn.setOnClickListener {
-            lifecycleScope.launch (Dispatchers.IO){
+            lifecycleScope.launch (Dispatchers.Main){
                 signupButtonClicked()
             }
         }
         binding.forgetPasswordTv.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 forgetPasswordClicked()
             }
         }
@@ -64,7 +64,7 @@ class Login : Fragment() {
     }
     private fun observeAuthState() {
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.Main) {
 
             viewModel.authState.collect { result ->
 
@@ -73,13 +73,14 @@ class Login : Fragment() {
                     is AuthResult.Loading -> {
                         binding.loginBtn.isEnabled = false
                         binding.loginBtn.text = "Logging in..."
-                        findNavController().navigate(R.id.action_login_to_homePage)
+
                     }
 
                     is AuthResult.Success -> {
                         binding.loginBtn.isEnabled = true
                         binding.loginBtn.text = "Login"
                         Toast.makeText(requireContext(), "Log in Successful", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_login_to_homePage)
                     }
 
                     is AuthResult.Error -> {
