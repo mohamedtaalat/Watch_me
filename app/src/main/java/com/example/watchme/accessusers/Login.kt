@@ -28,9 +28,8 @@ class Login : Fragment() {
     ): View? {
         binding = FragmentLoginBinding.inflate(layoutInflater)
         binding.loginBtn.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 loginButtonClicked()
-                observeAuthState()
             }
         }
         binding.signupBtn.setOnClickListener {
@@ -60,6 +59,7 @@ class Login : Fragment() {
                 email,
                 password
             )
+            observeAuthState()
         }
     }
     private fun observeAuthState() {
