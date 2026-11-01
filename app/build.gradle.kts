@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
 }
 
@@ -10,7 +11,7 @@ android {
         version = release(36)
     }
     buildFeatures {
-        viewBinding =  true
+        viewBinding = true
     }
 
     defaultConfig {
@@ -57,4 +58,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0")
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.coil)
 }
