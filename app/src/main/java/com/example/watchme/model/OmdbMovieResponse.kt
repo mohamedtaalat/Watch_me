@@ -29,7 +29,8 @@ data class OmdbMovieResponse(
     val imdbID: String,
     val Type: String? = null,
     val totalSeasons: String? = null,
-    val Response: String? = null
+    val Response: String? = null,
+    val Error: String? = null
 ) {
     fun toEntity(timestamp: Long = System.currentTimeMillis()): MovieHistoryEntity {
         val sanitizedPosterUrl = if (Poster.equals("N/A", ignoreCase = true) || Poster.isNullOrBlank()) {
