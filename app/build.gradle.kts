@@ -1,7 +1,15 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
+}
+
+val localProps = Properties().apply {
+    rootProject.file("local.properties").takeIf { it.exists() }
+        ?.inputStream()?.use { load(it) }
 }
 
 android {
@@ -10,7 +18,8 @@ android {
         version = release(36)
     }
     buildFeatures {
-        viewBinding =  true
+        viewBinding = true
+        buildConfig = true
     }
 
     defaultConfig {
@@ -19,6 +28,12 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField(
+            "String",
+            "OMDB_API_KEY",
+            "\"${localProps.getProperty("OMDB_API_KEY", "")}\""
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,4 +72,12 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0")
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.coil)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
 }
