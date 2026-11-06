@@ -19,17 +19,12 @@ class AuthViewModel : ViewModel() {
     val authState: StateFlow<AuthResult?> =
         _authState
 
-
-
     fun login(
         email: String,
         password: String
     ) {
-
         viewModelScope.launch(Dispatchers.IO) {
-
             _authState.value = AuthResult.Loading
-
             _authState.value =
                 repository.login(email, password)
         }
@@ -39,25 +34,23 @@ class AuthViewModel : ViewModel() {
         email: String,
         password: String
     ) {
-
-        viewModelScope.launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
             _authState.value = AuthResult.Loading
-
             _authState.value =
                 repository.signup(email, password)
         }
     }
 
     fun resetPassword(email: String) {
-
-        viewModelScope.launch {
-
+        viewModelScope.launch(Dispatchers.IO) {
             _authState.value = AuthResult.Loading
-
             _authState.value =
                 repository.resetPassword(email)
         }
+    }
+
+    fun resetAuthState() {
+        _authState.value = null
     }
 
     fun logout() {
