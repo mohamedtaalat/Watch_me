@@ -10,4 +10,15 @@
     <string name="msg_login_required">You should log in first</string>
     <string name="msg_logged_out">Logged out successfully</string>
 
+    <string name="home_title">Find a movie</string>
+    <string name="home_search_hint">Movie name</string>
+    <string name="home_search_btn">Search</string>
+    <string name="home_search_required">Enter a movie name</string>
+    <string name="home_results_title">Results</string>
+    <string name="home_results_idle">Search for a movie to see the results here</string>
+    <string name="home_results_empty">No movies found for \"%1$s\"</string>
+    <string name="home_history_title">Recent searches</string>
+    <string name="home_history_empty">Your search history will appear here</string>
+    <string name="home_history_delete">Remove from history</string>
+    <string name="home_poster_desc">Movie poster</string>
 </resources>
