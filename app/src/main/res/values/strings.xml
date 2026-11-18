@@ -21,4 +21,21 @@
     <string name="home_history_empty">Your search history will appear here</string>
     <string name="home_history_delete">Remove from history</string>
     <string name="home_poster_desc">Movie poster</string>
+
+    <string name="details_back">Back</string>
+    <string name="details_retry">Retry</string>
+    <string name="details_plot_title">Plot</string>
+    <string name="details_info_title">Details</string>
+    <string name="details_unknown_title">Unknown title</string>
+    <string name="details_imdb_rating">IMDb %1$s / 10</string>
+    <string name="details_imdb_rating_votes">IMDb %1$s / 10 (%2$s votes)</string>
+    <string name="details_director">Director</string>
+    <string name="details_writer">Writer</string>
+    <string name="details_actors">Actors</string>
+    <string name="details_released">Released</string>
+    <string name="details_language">Language</string>
+    <string name="details_country">Country</string>
+    <string name="details_awards">Awards</string>
+    <string name="details_seasons">Seasons</string>
+    <string name="details_metascore">Metascore</string>
 </resources>
